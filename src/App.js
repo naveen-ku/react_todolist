@@ -5,16 +5,39 @@ import itemData from './itemData'
 import './style.css'
 
 
-const App = () => {
+class App extends React.Component{
+    constructor(){
+        super()
+        this.state ={
+            todos: itemData,
+        }
+    this.handleChange = this.handleChange.bind(this)
+    }
 
-    const listComponent = itemData.map((listdata) => {
-        return(<Item  key={listdata.id} data={listdata}/>)
-    })
-    return(
-        <div>
-            {listComponent}
-        </div>
-    )
+    handleChange(id){
+        this.setState(prevState =>{
+            const updateditemData = prevState.todos.map(todo =>{
+                if (todo.id === id){
+                    todo.completed = !todo.completed
+                }
+                return todo
+            })
+            return {
+                todos :updateditemData
+            }
+        })
+    }
+
+    render(){
+        const listComponent = this.state.todos.map((listdata) => {
+            return(<Item  key={listdata.id} data={listdata} handleChange={this.handleChange}/>)
+        })
+        return(
+            <div>
+                {listComponent}
+            </div>
+        )
+    }
 }
 
 export default App;
